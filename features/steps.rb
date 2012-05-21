@@ -15,7 +15,7 @@ Given /^an Auction Sniper has started to bid in that auction$/ do
 end
 
 Then /^the auction will receive a join request from the Auction Sniper$/ do
-  @auction.should have_received_join_request_from_sniper
+  @auction.should have_received_join_request_from("sniper")
 end
 
 When /^an auction announces that it is closed$/ do
@@ -23,6 +23,21 @@ When /^an auction announces that it is closed$/ do
   sleep 0.1
 end
 
-Then /^the Auction Sniper will show that it lost the auction$/ do
+Then /^the Auction Sniper will show that it has lost$/ do
   @ui.status.should == "lost"
+end
+
+When /^the auction reports a price of "(.*?)" with an increment of "(.*?)" from "(.*?)"$/ do |price, increment, bidder|
+  @auction.report_price(price.to_i, increment.to_i, bidder)
+  sleep 0.1
+end
+
+Then /^the Auction Sniper will show that it is bidding$/ do
+  pending
+  @ui.status.should == "bidding"
+end
+
+Then /^the auction will have received a bid of "(.*?)" from the Auction Sniper$/ do |amount|
+  pending
+  @auction.should have_received_bid(amount.to_i, "sniper")
 end

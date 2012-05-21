@@ -5,8 +5,8 @@ class FakeAuctionServer
     @item_id = item_id
   end
 
-  def has_received_join_request_from_sniper?
-    @join_request
+  def has_received_join_request_from?(user)
+    @last_user == user && @last_message == "SOLVersion: 1.1; Command: JOIN;"
   end
 
   def announce_closed
@@ -14,10 +14,22 @@ class FakeAuctionServer
     chat.send_message("auction", "auction-#{@item_id}", "CLOSED")
   end
 
+  def report_price(price, increment, bidder)
+    message = "SOLVersion: 1.1; Event: PRICE; " +
+      "CurrentPrice: #{price}; Increment: #{increment}; Bidder: #{bidder};"
+    chat = Chat.instance
+    chat.send_message("auction", "auction-#{@item_id}", message)
+  end
+
+  def has_received_bid?(amount, user)
+    @last_user == user && @last_message == "SOLVersion: 1.1; Command: BID; Price: #{amount};"
+  end
+
   def start_selling_item
     chat = Chat.instance
-    chat.listen("auction", "auction-#{@item_id}") do |message|
-      @join_request = true
+    chat.listen("auction", "auction-#{@item_id}") do |user, message|
+      @last_message = message
+      @last_user = user
     end
   end
 end

@@ -19,7 +19,7 @@ class Chat
         if @messages[channel] && @messages[channel].size > index
           m = @messages[channel][index]
           if m[:user] != user
-            yield m[:message]
+            yield m[:user], m[:message]
           end
           index += 1
         end
