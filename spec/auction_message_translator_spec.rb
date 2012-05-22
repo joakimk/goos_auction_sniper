@@ -16,7 +16,7 @@ describe AuctionMessageTranslator do
     translator.process_message(UNUSED_CHAT, message)
   end
 
-  it "notifies about bid details whne the current price message is received" do
+  it "notifies about bid details when the current price message is received" do
     listener.should_receive(:current_price).with(192, 7).once
 
     message = Chat::Message.new(UNUSED_USER, "SOLVersion: 1.1; Event: PRICE; CurrentPrice: 192; Increment: 7; Bidder: Someone else;")
