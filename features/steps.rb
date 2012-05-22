@@ -1,6 +1,7 @@
 $: << "lib"
 
-require "auction_sniper"
+require "app"
+require "ui"
 require "fake_auction_server"
 
 Given /^an auction is selling an item$/ do
@@ -10,7 +11,7 @@ end
 
 Given /^an Auction Sniper has started to bid in that auction$/ do
   @ui = UI.new
-  AuctionSniper.new(@ui, @auction.item_id)
+  App.new(@ui, @auction.item_id)
 end
 
 Then /^the auction will receive a join request from the Auction Sniper$/ do
