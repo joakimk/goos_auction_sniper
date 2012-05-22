@@ -10,6 +10,9 @@ class Chat
   def send_message(user, channel, message)
     @messages[channel] ||= []
     @messages[channel] << { user: user, message: message }
+
+    # ensure messages have arrived
+    sleep 0.1
   end
 
   def listen(user, channel)

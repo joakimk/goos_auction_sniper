@@ -11,7 +11,6 @@ end
 Given /^an Auction Sniper has started to bid in that auction$/ do
   @ui = UI.new
   AuctionSniper.new(@ui, @auction.item_id)
-  sleep 0.1
 end
 
 Then /^the auction will receive a join request from the Auction Sniper$/ do
@@ -20,7 +19,6 @@ end
 
 When /^an auction announces that it is closed$/ do
   @auction.announce_closed
-  sleep 0.1
 end
 
 Then /^the Auction Sniper will show that it has lost$/ do
@@ -29,7 +27,6 @@ end
 
 When /^the auction reports a price of "(.*?)" with an increment of "(.*?)" from "(.*?)"$/ do |price, increment, bidder|
   @auction.report_price(price.to_i, increment.to_i, bidder)
-  sleep 0.1
 end
 
 Then /^the Auction Sniper will show that it is bidding$/ do
