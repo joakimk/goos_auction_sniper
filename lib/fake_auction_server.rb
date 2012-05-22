@@ -6,7 +6,7 @@ class FakeAuctionServer
   end
 
   def has_received_join_request_from?(user)
-    @last_user == user && @last_message == "SOLVersion: 1.1; Command: JOIN;"
+    @last_message.user == user && @last_message.body == "SOLVersion: 1.1; Command: JOIN;"
   end
 
   def announce_closed
@@ -22,14 +22,13 @@ class FakeAuctionServer
   end
 
   def has_received_bid?(amount, user)
-    @last_user == user && @last_message == "SOLVersion: 1.1; Command: BID; Price: #{amount};"
+    @last_message.user == user && @last_message.body == "SOLVersion: 1.1; Command: BID; Price: #{amount};"
   end
 
   def start_selling_item
     chat = Chat.instance
-    chat.listen("auction", "auction-#{@item_id}") do |user, message|
+    chat.listen("auction", "auction-#{@item_id}") do |message|
       @last_message = message
-      @last_user = user
     end
   end
 end

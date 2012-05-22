@@ -3,13 +3,15 @@ require 'singleton'
 class Chat
   include Singleton
 
+  class Message < Struct.new(:user, :body); end
+
   def initialize
     @messages = {}
   end
 
   def send_message(user, channel, message)
     @messages[channel] ||= []
-    @messages[channel] << { user: user, message: message }
+    @messages[channel] << Message.new(user, message)
 
     # ensure messages have arrived
     sleep 0.1
@@ -21,8 +23,8 @@ class Chat
       loop do
         if @messages[channel] && @messages[channel].size > index
           m = @messages[channel][index]
-          if m[:user] != user
-            yield m[:user], m[:message]
+          if m.user != user
+            yield m
           end
           index += 1
         end
