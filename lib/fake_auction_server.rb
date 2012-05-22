@@ -11,7 +11,7 @@ class FakeAuctionServer
 
   def announce_closed
     chat = Chat.instance
-    chat.send_message("auction", "auction-#{@item_id}", "CLOSED")
+    chat.send_message("auction", "auction-#{@item_id}", "SOLVersion: 1.1; Event: CLOSE;")
   end
 
   def report_price(price, increment, bidder)
