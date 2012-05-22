@@ -6,7 +6,7 @@ describe AuctionMessageTranslator do
   UNUSED_USER = nil
   UNUSED_CHAT = nil
 
-  let(:listener) { mock(AuctionEventListener) }
+  let(:listener) { mock }
   let(:translator) { AuctionMessageTranslator.new(listener) }
 
   it "notifies that the auction is closed when a close message is received" do

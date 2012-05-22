@@ -1,5 +1,3 @@
-require_relative 'auction_event_listener'
-
 class AuctionMessageTranslator
   def initialize(listener)
     @listener = listener
