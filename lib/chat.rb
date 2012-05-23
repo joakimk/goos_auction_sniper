@@ -14,7 +14,7 @@ class Chat
     @messages[channel] << Message.new(user, message)
 
     # ensure messages have arrived
-    sleep 0.1
+    sleep 0.25
   end
 
   def listen(user, channel)

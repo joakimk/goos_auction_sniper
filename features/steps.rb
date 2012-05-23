@@ -31,11 +31,9 @@ When /^the auction reports a price of "(.*?)" with an increment of "(.*?)" from 
 end
 
 Then /^the Auction Sniper will show that it is bidding$/ do
-  pending
   @ui.status.should == "bidding"
 end
 
 Then /^the auction will have received a bid of "(.*?)" from the Auction Sniper$/ do |amount|
-  pending
   @auction.should have_received_bid(amount.to_i, "sniper")
 end
