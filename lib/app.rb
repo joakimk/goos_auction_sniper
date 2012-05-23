@@ -17,9 +17,11 @@ class App
     end
   end
 
-  def initialize(ui, item_id)
+  def initialize(ui)
     @ui = ui
+  end
 
+  def join_auction(item_id)
     chat = Chat::Connection.new("sniper", "auction-#{item_id}")
     auction = Auction.new(chat)
 

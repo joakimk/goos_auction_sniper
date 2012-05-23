@@ -11,7 +11,8 @@ end
 
 Given /^an Auction Sniper has started to bid in that auction$/ do
   @ui = UI.new
-  App.new(@ui, @auction.item_id)
+  app = App.new(@ui)
+  app.join_auction(@auction.item_id)
 end
 
 Then /^the auction will receive a join request from the Auction Sniper$/ do
