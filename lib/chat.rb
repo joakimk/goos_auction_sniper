@@ -1,6 +1,24 @@
 require 'singleton'
 
 class Chat
+  class Connection
+    def initialize(user, channel, &block)
+      @user = user
+      @channel = channel
+      @chat = Chat.instance
+    end
+
+    def listen
+      @chat.listen(@user, @channel) do |message|
+        yield message
+      end
+    end
+
+    def send_message(message)
+      @chat.send_message(@user, @channel, message)
+    end
+  end
+
   include Singleton
 
   class Message < Struct.new(:user, :body); end

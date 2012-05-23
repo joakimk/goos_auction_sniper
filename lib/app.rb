@@ -4,27 +4,26 @@ require "auction_sniper"
 
 class App
   class Auction
-    def initialize(chat, item_id)
+    def initialize(chat)
       @chat = chat
-      @item_id = item_id
     end
 
     def bid(amount)
-      @chat.send_message("sniper", "auction-#{@item_id}", "SOLVersion: 1.1; Command: BID; Price: #{amount};")
+      @chat.send_message("SOLVersion: 1.1; Command: BID; Price: #{amount};")
     end
 
     def join
-      @chat.send_message("sniper", "auction-#{@item_id}", "SOLVersion: 1.1; Command: JOIN;")
+      @chat.send_message("SOLVersion: 1.1; Command: JOIN;")
     end
   end
 
   def initialize(ui, item_id)
     @ui = ui
 
-    chat = Chat.instance 
-    auction = Auction.new(chat, item_id)
+    chat = Chat::Connection.new("sniper", "auction-#{item_id}")
+    auction = Auction.new(chat)
 
-    chat.listen("sniper", "auction-#{item_id}") do |message|
+    chat.listen do |message|
       translator = AuctionMessageTranslator.new(AuctionSniper.new(auction, self))
       translator.process_message(chat, message)
     end

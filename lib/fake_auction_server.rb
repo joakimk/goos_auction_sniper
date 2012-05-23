@@ -3,6 +3,7 @@ class FakeAuctionServer
 
   def initialize(item_id)
     @item_id = item_id
+    @chat = Chat::Connection.new("auction", "auction-#{item_id}")
   end
 
   def has_received_join_request_from?(user)
@@ -10,15 +11,13 @@ class FakeAuctionServer
   end
 
   def announce_closed
-    chat = Chat.instance
-    chat.send_message("auction", "auction-#{@item_id}", "SOLVersion: 1.1; Event: CLOSE;")
+    @chat.send_message("SOLVersion: 1.1; Event: CLOSE;")
   end
 
   def report_price(price, increment, bidder)
     message = "SOLVersion: 1.1; Event: PRICE; " +
       "CurrentPrice: #{price}; Increment: #{increment}; Bidder: #{bidder};"
-    chat = Chat.instance
-    chat.send_message("auction", "auction-#{@item_id}", message)
+    @chat.send_message(message)
   end
 
   def has_received_bid?(amount, user)
@@ -26,8 +25,7 @@ class FakeAuctionServer
   end
 
   def start_selling_item
-    chat = Chat.instance
-    chat.listen("auction", "auction-#{@item_id}") do |message|
+    @chat.listen do |message|
       @last_message = message
     end
   end
