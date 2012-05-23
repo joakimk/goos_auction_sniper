@@ -24,9 +24,9 @@ class App
   def join_auction(item_id)
     chat = Chat::Connection.new("sniper", "auction-#{item_id}")
     auction = Auction.new(chat)
+    auction_sniper = AuctionSniper.new(auction, self)
 
     chat.listen do |message|
-      auction_sniper = AuctionSniper.new(auction, self)
       translator = AuctionMessageTranslator.new(auction_sniper)
       translator.process_message(chat, message)
     end
