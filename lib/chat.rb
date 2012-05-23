@@ -24,30 +24,19 @@ class Chat
   class Message < Struct.new(:user, :body); end
 
   def initialize
-    @messages = {}
+    @listeners = {}
   end
 
-  def send_message(user, channel, message)
-    @messages[channel] ||= []
-    @messages[channel] << Message.new(user, message)
-
-    # ensure messages have arrived
-    sleep 0.25
-  end
-
-  def listen(user, channel)
-    Thread.new do
-      index = 0
-      loop do
-        if @messages[channel] && @messages[channel].size > index
-          m = @messages[channel][index]
-          if m.user != user
-            yield m
-          end
-          index += 1
-        end
-        sleep 0.05
+  def send_message(sender, channel, message)
+    @listeners[channel].each do |receiver, block|
+      if sender != receiver
+        block.call(Message.new(sender, message))
       end
     end
+  end
+
+  def listen(user, channel, &block)
+    @listeners[channel] ||= {}
+    @listeners[channel][user] = block
   end
 end
