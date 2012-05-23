@@ -26,7 +26,8 @@ class App
     auction = Auction.new(chat)
 
     chat.listen do |message|
-      translator = AuctionMessageTranslator.new(AuctionSniper.new(auction, self))
+      auction_sniper = AuctionSniper.new(auction, self)
+      translator = AuctionMessageTranslator.new(auction_sniper)
       translator.process_message(chat, message)
     end
 
