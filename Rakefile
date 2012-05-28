@@ -1,6 +1,4 @@
 require 'rspec/core/rake_task'
-require 'cucumber'
-require 'cucumber/rake/task'
 
 desc "Run unit tests"
 RSpec::Core::RakeTask.new('spec') do |t|
@@ -8,6 +6,8 @@ RSpec::Core::RakeTask.new('spec') do |t|
 end
 
 desc "Run acceptance tests"
-Cucumber::Rake::Task.new(:features)
+task :features do
+  system("cucumber") || exit(1)
+end
 
 task :default => [ :spec, :features ]
