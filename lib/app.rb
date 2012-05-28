@@ -32,13 +32,14 @@ class App
   end
 
   def initialize(ui)
-    @sniper_state_display = SniperStateDisplay.new(ui)
+    @ui = ui
   end
 
   def join_auction(item_id)
     chat = Chat::Connection.new("sniper", "auction-#{item_id}")
     auction = Auction.new(chat)
-    auction_sniper = AuctionSniper.new(auction, @sniper_state_display)
+    sniper_state_display = SniperStateDisplay.new(@ui)
+    auction_sniper = AuctionSniper.new(auction, sniper_state_display)
 
     chat.listen do |message|
       translator = AuctionMessageTranslator.new(auction_sniper)
