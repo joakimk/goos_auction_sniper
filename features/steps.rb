@@ -23,16 +23,16 @@ When /^an auction announces that it is closed$/ do
   @auction.announce_closed
 end
 
-Then /^the Auction Sniper will show that it has lost$/ do
-  @ui.status.should == "lost"
+Then /^the Auction Sniper will show that it has (.+?)$/ do |event|
+  @ui.status.should == event
 end
 
 When /^the auction reports a price of "(.*?)" with an increment of "(.*?)" from "(.*?)"$/ do |price, increment, bidder|
   @auction.report_price(price.to_i, increment.to_i, bidder)
 end
 
-Then /^the Auction Sniper will show that it is bidding$/ do
-  @ui.status.should == "bidding"
+Then /^the Auction Sniper will show that it is (.+?)$/ do |status|
+  @ui.status.should == status
 end
 
 Then /^the auction will have received a bid of "(.*?)" from the Auction Sniper$/ do |amount|

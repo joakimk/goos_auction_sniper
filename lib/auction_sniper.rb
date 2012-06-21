@@ -1,3 +1,5 @@
+require 'price_source'
+
 class AuctionSniper
   def initialize(auction, listener)
     @auction = auction
@@ -5,12 +7,21 @@ class AuctionSniper
   end
 
   def auction_closed
-    @listener.sniper_lost
+    if @winning
+      @listener.sniper_won
+    else
+      @listener.sniper_lost
+    end
   end
 
-  def current_price(price, increment)
-    @listener.sniper_bidding
-    @auction.bid(price + increment)
+  def current_price(price, increment, price_source)
+    @winning = (price_source == PriceSource::SNIPER)
+    if @winning
+      @listener.sniper_winning
+    else
+      @listener.sniper_bidding
+      @auction.bid(price + increment)
+    end
   end
 end
 

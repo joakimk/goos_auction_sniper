@@ -2,6 +2,8 @@ require 'singleton'
 
 class Chat
   class Connection
+    attr_reader :user
+
     def initialize(user, channel, &block)
       @user = user
       @channel = channel

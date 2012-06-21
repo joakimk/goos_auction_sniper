@@ -26,8 +26,16 @@ class App
       @ui.status = "lost"
     end
 
+    def sniper_won
+      @ui.status = "won"
+    end
+
     def sniper_bidding
       @ui.status = "bidding"
+    end
+
+    def sniper_winning
+      @ui.status = "winning"
     end
   end
 
@@ -42,7 +50,7 @@ class App
     auction_sniper = AuctionSniper.new(auction, sniper_state_display)
 
     chat.listen do |message|
-      translator = AuctionMessageTranslator.new(auction_sniper)
+      translator = AuctionMessageTranslator.new(chat.user, auction_sniper)
       translator.process_message(chat, message)
     end
 

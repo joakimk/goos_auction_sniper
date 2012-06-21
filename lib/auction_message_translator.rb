@@ -1,5 +1,6 @@
 class AuctionMessageTranslator
-  def initialize(listener)
+  def initialize(sniper_id, listener)
+    @sniper_id = sniper_id
     @listener = listener
   end
 
@@ -9,7 +10,7 @@ class AuctionMessageTranslator
     when "CLOSE"
       @listener.auction_closed
     when "PRICE"
-      @listener.current_price(event.current_price, event.increment.to_i)
+      @listener.current_price(event.current_price, event.increment.to_i, event.price_source(@sniper_id))
     else
       raise
     end
@@ -36,6 +37,14 @@ class AuctionMessageTranslator
 
     def type
       @event["Event"]
+    end
+
+    def bidder
+      @event["Bidder"]
+    end
+
+    def price_source(sniper_id)
+      bidder == sniper_id ? PriceSource::SNIPER : PriceSource::OTHER
     end
   end
 end
